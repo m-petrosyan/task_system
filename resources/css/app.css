@@ -1,0 +1,12 @@
+@import "../../node_modules/tailwindcss";
+
+@theme {
+    --color-black-transparent: rgba(29, 29, 31, 0.76);
+    --color-dark: #1d1d1f;
+    --color-gray-dark: #242328;
+    --color-gray-light: #2c2b31;
+    --color-gray: #2c2b31;
+    --color-blue: #8dbfda;
+    --color-blue-dark: #323849;
+    --color-red: #d4806c;
+}
