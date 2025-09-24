@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\TaskStatusEnum;
 use App\Http\Requests\Task\TaskCreateRequest;
 use App\Http\Requests\Task\TaskIndexRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateStatusRequest;
+use App\Http\Resources\Task\TaskGroupCollection;
 use App\Http\Resources\Task\TaskResource;
-use App\Http\Resources\Task\TasksStatusResource;
 use App\Models\Task;
+use App\Repositories\TaskRepository;
 use App\Services\TaskService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -28,7 +28,14 @@ class TaskController extends Controller
      */
     public function index(TaskIndexRequest $request): ResourceCollection
     {
-        return TasksStatusResource::collection(TaskStatusEnum::values());
+        $tasks = $this->taskService->groupTasksBoard(
+            TaskRepository::index(
+                $request->status,
+                $request->text,
+                $request->user_id)
+        );
+
+        return new TaskGroupCollection($tasks);
     }
 
     /**

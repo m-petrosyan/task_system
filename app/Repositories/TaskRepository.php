@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class TaskRepository implements TaskRepositoryInterface
 {
     public static function index(
-        string $status = '',
+        ?string $status = '',
         ?string $text = null,
         int|null $userId = null,
     ): Collection {

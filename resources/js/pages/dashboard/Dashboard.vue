@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import {useTaskStore} from '@/stores/taskStore';
 import {computed, onMounted} from "vue";
-import TextIcon from "@/components/icons/TextIcon.vue";
-import TimeIcon from "@/components/icons/TimeIcon.vue";
 import {formatStatusText} from "@/Helpers/textHelper";
 import {useAuthStore} from "@/stores/authStore";
 
@@ -22,9 +20,9 @@ onMounted(() => {
     <div v-if="tasks" class="flex justify-between gap-x-10 mt-10 rounded-xl">
       <div v-for="(statusGroup, index) in tasks" :key="statusGroup.status" class="w-4/12 bg-gray-dark p-2">
         <h3 class="text-md mb-4 text-gray-300">
-          {{ formatStatusText(statusGroup.status) }}
+          {{ formatStatusText(index + ' ') }}
         </h3>
-        <router-link :to="{name: 'tasks-show', params: {id: task.id}}" v-for="task in statusGroup.data" :key="task.id"
+        <router-link :to="{name: 'tasks-show', params: {id: task.id}}" v-for="task in statusGroup" :key="task.id"
                      class=" p-4 mb-4 rounded block"
                      :class="task.is_owner ? 'bg-blue-dark': 'bg-gray'">
           <div>

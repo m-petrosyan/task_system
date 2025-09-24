@@ -48,7 +48,6 @@ export const useApi = () => {
                 throw {message: `HTTP Error: ${response.status} ${response.statusText}`, data: errorData};
             }
             if (endpoint !== '/notifications') {
-                console.log(111, endpoint);
                 errorStore.setErrors({message: '', fields: {}});
             }
 

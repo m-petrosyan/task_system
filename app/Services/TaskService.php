@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Enums\TaskStatusEnum;
 use App\Models\Task;
 use App\Notifications\TaskAssignedNotification;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 
 class TaskService
@@ -27,6 +29,19 @@ class TaskService
         Notification::send($task->user, new TaskAssignedNotification($task, 'Task status updated:'));
 
         $this->update($task, $attributes);
+    }
+
+    public function groupTasksBoard(Collection $tasks): Collection
+    {
+        $groupTasks = $tasks->groupBy('status');
+
+        foreach (TaskStatusEnum::values() as $enum) {
+            if (!$groupTasks->has($enum)) {
+                $groupTasks->put($enum, collect());
+            }
+        }
+
+        return $groupTasks;
     }
 
 
