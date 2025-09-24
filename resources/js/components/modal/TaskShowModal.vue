@@ -83,6 +83,11 @@ const updateStatus = async () => {
           <label class="block text-sm font-medium">Assigned</label>
           <p class="mt-1 block w-full bg-gray-light rounded-md shadow-sm p-2">{{ task.assigned_user?.name }}</p>
         </div>
+        <div>
+          <label class="block text-sm font-medium">Deadline</label>
+          <p class="mt-1 block w-full bg-gray-light rounded-md shadow-sm p-2">
+            {{ new Date(task.due_date).toLocaleDateString() }}</p>
+        </div>
         <div class="flex justify-end space-x-2 mt-10">
           <template v-if="task.is_owner">
             <button @click="deleteTask" class="px-4 py-2 rounded bg-gray-light cursor-pointer">

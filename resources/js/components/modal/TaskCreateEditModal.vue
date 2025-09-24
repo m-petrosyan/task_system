@@ -6,55 +6,58 @@ import {useAuthStore} from "@/stores/authStore";
 import {useTaskStore} from "@/stores/taskStore";
 import ErrorMessagesComponent from "@/components/elements/ErrorMessagesComponent.vue";
 
-const userStore = useAuthStore()
+const userStore = useAuthStore();
 const taskStore = useTaskStore();
 
-const route = useRoute()
+const route = useRoute();
 const user = computed(() => userStore.user);
 const users = computed(() => userStore.availableUsers);
 const task = computed(() => taskStore.task);
-const pageName = ref('')
+const pageName = ref('');
 
 const setPageData = () => {
   pageName.value = route.name?.split('tasks-').pop();
   if (props.task_id) {
     taskStore.fetchGetTask(props.task_id);
   }
-}
+};
 
 const statuses = ['pending', 'in_progress', 'completed'];
 
 const props = defineProps<{
-  task_id: number | null
-  show: boolean
-  onClose: () => void
-}>()
-
+  task_id: number | null;
+  show: boolean;
+  onClose: () => void;
+}>();
 
 onMounted(() => {
   setPageData();
+  userStore.fetchAvailability();
 });
 
 onUpdated(() => {
-  setPageData()
-})
+  setPageData();
+});
 
 const taskData = reactive({
   title: '',
   description: '',
   status: 'pending',
+  assigned_user: {},
   assigned_user_id: null,
-  due_date: null,
+  due_date: '',
 });
 
 watch(task, (newTask) => {
-  if (props.task_id) {
+  if (props.task_id && newTask) {
+    const formattedDate = newTask.due_date ? new Date(newTask.due_date).toISOString().slice(0, 16) : '';
     Object.assign(taskData, {
-      title: newTask?.title || '',
-      description: newTask?.description || '',
-      status: newTask?.status || 'pending',
-      assigned_user_id: newTask?.assigned_user_id || null,
-      due_date: newTask?.due_date || null,
+      title: newTask.title || '',
+      description: newTask.description || '',
+      status: newTask.status || 'pending',
+      assigned_user: newTask.assigned_user || null,
+      assigned_user_id: newTask.assigned_user_id || null,
+      due_date: formattedDate,
     });
   }
 }, {immediate: true});
@@ -68,10 +71,14 @@ watch(
 );
 
 const submitForm = () => {
+  const formattedData = {
+    ...taskData,
+    due_date: taskData.due_date ? new Date(taskData.due_date).toISOString() : null,
+  };
   if (!props.task_id) {
-    taskStore.fetchCreateTask(taskData).then(() => props.onClose())
+    taskStore.fetchCreateTask(formattedData).then(() => props.onClose());
   } else {
-    taskStore.fetchUpdateTask(props.task_id, taskData).then(() => props.onClose());
+    taskStore.fetchUpdateTask(props.task_id, formattedData).then(() => props.onClose());
   }
 };
 </script>
@@ -92,7 +99,7 @@ const submitForm = () => {
           />
         </div>
         <div>
-          <label for="description" class="block text-sm font-medium ">Description</label>
+          <label for="description" class="block text-sm font-medium">Description</label>
           <textarea
               v-model="taskData.description"
               id="description"
@@ -113,10 +120,10 @@ const submitForm = () => {
         <div>
           <label for="assign" class="block text-sm font-medium">Assign</label>
           <select
-              v-if="users"
+              v-if="users && users.length > 0"
               id="assign"
               v-model="taskData.assigned_user_id"
-              class="bg-gray-light block w-full p-2 rounded-md outline-none mt-2"
+              class="mt-1 block w-full bg-gray-light rounded-md shadow-sm p-2"
           >
             <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }}</option>
           </select>
@@ -130,7 +137,6 @@ const submitForm = () => {
               class="mt-1 block w-full bg-gray-light rounded-md shadow-sm p-2"
           />
         </div>
-
         <div class="flex justify-end space-x-2 mt-10">
           <button
               type="button"

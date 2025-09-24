@@ -23,6 +23,7 @@ class TaskResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'assigned_user' => new UserResource($this->whenLoaded('assignedUser')),
+            'assigned_user_id' => $this->assigned_user_id,
             'is_owner' => auth()->id() === $this->user_id,
             'is_assigned' => $this->assigned_user_id === auth()->id()
         ];
