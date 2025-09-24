@@ -2,6 +2,7 @@
 import {reactive} from "vue";
 import {useAuthStore} from "@/stores/authStore";
 import {useRouter} from "vue-router";
+import ErrorMessagesComponent from "@/components/elements/ErrorMessagesComponent.vue";
 
 const store = useAuthStore();
 const router = useRouter();
@@ -21,6 +22,7 @@ const submitForm = () => {
   <div class="flex justify-center items-center h-screen ">
     <form @submit.prevent="submitForm" class="space-y-4 bg-gray-dark px-10 py-8">
       <h3>Sign In</h3>
+      <ErrorMessagesComponent/>
       <div>
         <label for="email" class="block text-sm font-medium">Email</label>
         <input

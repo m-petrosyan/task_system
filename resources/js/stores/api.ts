@@ -47,8 +47,10 @@ export const useApi = () => {
                 const errorData = await response.json();
                 throw {message: `HTTP Error: ${response.status} ${response.statusText}`, data: errorData};
             }
-
-            errorStore.setErrors({message: '', fields: {}});
+            if (endpoint !== '/notifications') {
+                console.log(111, endpoint);
+                errorStore.setErrors({message: '', fields: {}});
+            }
 
             const contentType = response.headers.get('content-type');
             if (contentType?.includes('application/json')) {
@@ -57,6 +59,7 @@ export const useApi = () => {
 
             return {data: undefined, status: response.status};
         } catch (error: any) {
+            // alert(error.data?.message || error.message || 'Произошла ошибка');
             errorStore.setErrors({
                 message: error.data?.message || error.message || 'An unexpected error occurred',
                 fields: error.data?.errors || {}

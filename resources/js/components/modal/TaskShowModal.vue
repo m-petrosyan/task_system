@@ -4,6 +4,7 @@ import {useRoute} from "vue-router";
 import {computed, ref, watch} from "vue";
 import {useAuthStore} from "@/stores/authStore";
 import {useTaskStore} from "@/stores/taskStore";
+import ErrorMessagesComponent from "@/components/elements/ErrorMessagesComponent.vue";
 
 const userStore = useAuthStore()
 const taskStore = useTaskStore();
@@ -55,6 +56,7 @@ const updateStatus = async () => {
   <teleport to="body">
     <ModalComponent :show="show" :onClose="onClose">
       <h2 class="text-lg font-bold mb-4 capitalize">{{ pageName }}</h2>
+      <ErrorMessagesComponent/>
       <form v-if="task" @submit.prevent="updateStatus" class="space-y-4">
         <div>
           <label class="block text-sm font-medium">Title</label>
