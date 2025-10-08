@@ -1,64 +1,63 @@
 # 🗓 Task Scheduling Tool
 
-Lightweight internal tool for managers to create, assign, and track tasks, as well as monitor user availability.
+Лёгкий внутренний инструмент для менеджеров: создание, назначение и отслеживание задач, а также мониторинг доступности пользователей.
 
 ---
 
-## 🚀 Features
+## 🚀 Функциональность
 
 ### Backend (Laravel)
-- **Task Management**
-  - List, create, update, delete tasks
-  - Search tasks by title or description
-- **User Availability**
-  - View all users with current status
-  - Toggle user availability
-- **Basic Authentication**
-  - Simple login for managers and users
+- **Управление задачами**
+  - Просмотр, создание, обновление, удаление задач  
+  - Поиск по названию или описанию  
+- **Доступность пользователей**
+  - Список пользователей с их статусом  
+  - Переключение доступности  
+- **Аутентификация**
+  - Простая авторизация для менеджеров и пользователей  
 
 ### Frontend (Vue.js + TypeScript)
-- **Task Board View**
-  - Kanban or list-style display grouped by status
-  - Filter by status or assignee
-  - Search tasks by title/description
-- **Task Assignment Modal**
-  - Create/edit task with title, description, due date, assignee, and status
-- **User Availability Toggle**
-  - Toggle user availability in real-time
-- **Responsive Admin Dashboard**
+- **Доска задач**
+  - Просмотр задач в виде списка или Kanban  
+  - Фильтрация по статусу или исполнителю  
+  - Поиск по названию/описанию  
+- **Модальное окно задачи**
+  - Создание/редактирование задачи (название, описание, дедлайн, исполнитель, статус)  
+- **Переключение доступности**
+  - Быстрое изменение статуса пользователя  
+- **Адаптивная админ-панель**
 
 ---
 
-## ⚙️ Technical Requirements
+## ⚙️ Технические требования
 
-- **Database:** MySQL (with indexes for search)
-- **Seeders:** Prepopulate users and statuses
-- **Optional Enhancements:**
-  - Filters by status, assignee, due date
-  - Docker containerization (backend + DB)
-  - Task creation/assignment notifications (simulated or via websockets)
+- **База данных:** MySQL (с индексами для поиска)
+- **Сидеры:** наполнение пользователей и статусов
+- **Дополнительно (по желанию):**
+  - Фильтры задач (по статусу, исполнителю, сроку)
+  - Уведомления при создании/назначении задачи (эмуляция или WebSockets)
 
 ---
 
-## 🧩 Setup Instructions
+## 🧩 Установка и запуск
 
 ```bash
-# Clone repository
+# Клонировать репозиторий
 git clone <repo-url>
 cd task-scheduler
 
-# Environment setup
+# Настройка окружения
 cp .env.example .env
 composer install
 php artisan key:generate
 
-# Database setup
+# Настройка базы данных
 php artisan migrate
 php artisan db:seed
 
-# Frontend setup
+# Установка фронтенда
 npm install
 npm run dev
 
-# Start server
+# Запуск сервера
 php artisan serve
